@@ -2,14 +2,22 @@ package com.bonnieapps.springsecurityapp.student;
 
 public class Student {
 
-    private Long studentId;
+    private Integer studentId;
     private String studentName;
 
-    public Long getStudentId() {
+    public Student(Integer studentId, String studentName) {
+        this.studentId = studentId;
+        this.studentName = studentName;
+    }
+
+    public Student() {
+    }
+
+    public Integer getStudentId() {
         return studentId;
     }
 
-    public void setStudentId(Long studentId) {
+    public void setStudentId(Integer studentId) {
         this.studentId = studentId;
     }
 
