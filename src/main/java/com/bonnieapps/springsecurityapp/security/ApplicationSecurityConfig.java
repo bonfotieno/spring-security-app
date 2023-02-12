@@ -42,10 +42,10 @@ public class ApplicationSecurityConfig {
                 .antMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name()) //role based authentication
 
                 // permission based Auth
+                .antMatchers( "/management/api/**").hasAnyRole(ADMIN.name(), ADMINTRANEE.name())
                 .antMatchers(HttpMethod.DELETE, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
                 .antMatchers(HttpMethod.POST, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
                 .antMatchers(HttpMethod.PUT, "/management/api/**").hasAuthority(COURSE_WRITE.getPermission())
-                .antMatchers(HttpMethod.GET, "/management/api/**").hasAnyRole(ADMIN.name(), ADMINTRANEE.name())
 
                 .anyRequest()
                 .authenticated() //any request must be authenticated i.e. client must specify the username and passwd
