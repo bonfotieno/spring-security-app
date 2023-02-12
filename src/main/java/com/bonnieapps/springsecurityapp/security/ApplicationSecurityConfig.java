@@ -30,8 +30,8 @@ public class ApplicationSecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests()  // authorize requests
-                .antMatchers("/", "index", "/css/*", "/js/*")
-                .permitAll()
+                .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
+                .antMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name()) //role based authentication
                 .anyRequest()
                 .authenticated() //any request must be authenticated i.e. client must specify the username and passwd
                 .and()
@@ -44,14 +44,17 @@ public class ApplicationSecurityConfig {
         UserDetails mimi = User.builder()
                 .username("mimi56")
                 .password(passwordEncoder.encode("password") )
-                .roles("STUDENT")  //internally spring will store it like ROLE_STUDENT
+                .roles(ApplicationUserRole.STUDENT.name())  //internally spring will store it like ROLE_STUDENT
                 .build();
 
-        User.builder()
+        UserDetails quill = User.builder()
                 .username("quill")
-                .password(passwordEncoder.encode("password") )
-                .roles("STUDENT")  //internally spring will store it like ROLE_STUDENT
+                .password(passwordEncoder.encode("password123") )
+                .roles(ApplicationUserRole.ADMIN.name())  //internally spring will store it like ROLE_ADMIN
                 .build();
-        return new InMemoryUserDetailsManager(mimi);
+        return new InMemoryUserDetailsManager(
+                mimi,
+                quill
+        );
     }
 }
