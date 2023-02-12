@@ -14,6 +14,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
 
 import static com.bonnieapps.springsecurityapp.security.ApplicationUserPermission.*;
 import static com.bonnieapps.springsecurityapp.security.ApplicationUserRole.*;
@@ -38,7 +39,8 @@ public class ApplicationSecurityConfig {
          * This method is where we define our web security rules
          * */
         http
-                .csrf().disable()
+                .csrf().csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .and()
                 .authorizeHttpRequests()  // authorize requests
                 .antMatchers("/", "index", "/css/*", "/js/*").permitAll()
                 .antMatchers("/api/**").hasRole(ApplicationUserRole.STUDENT.name()) //role based authentication
