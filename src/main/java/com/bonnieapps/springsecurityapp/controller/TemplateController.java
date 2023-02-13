@@ -12,4 +12,9 @@ public class TemplateController {
     public String getLoginView(){
         return "login"; // this string must be the exact name as the corresponding html file
     }
+
+    @GetMapping("courses")
+    public String getCourses(){
+        return "courses"; // this string must be the exact name as the corresponding html file
+    }
 }

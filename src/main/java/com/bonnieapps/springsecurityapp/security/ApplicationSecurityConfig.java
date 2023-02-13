@@ -56,7 +56,8 @@ public class ApplicationSecurityConfig {
                 .authenticated() //any request must be authenticated i.e. client must specify the username and passwd
                 .and()
                 .formLogin() // and the mechanism that we want to reinforce the authenticity of the client is by using FormLogin
-                .loginPage("/login").permitAll();
+                .loginPage("/login").permitAll()
+                .defaultSuccessUrl("/courses", true);
         return http.build();
     }
 
