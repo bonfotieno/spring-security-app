@@ -61,10 +61,13 @@ public class ApplicationSecurityConfig {
                 .formLogin() // and the mechanism that we want to reinforce the authenticity of the client is by using FormLogin
                     .loginPage("/login").permitAll()
                     .defaultSuccessUrl("/courses", true)
+                    .passwordParameter("password")
+                    .usernameParameter("username")
                 .and()
                 .rememberMe()//defaults to 2 weeks
                     .tokenValiditySeconds((int)TimeUnit.DAYS.toSeconds(21))
                     .key("somethingverysecured")
+                    .rememberMeParameter("remember-me")
                 .and()
                 .logout()
                     .logoutUrl("/logout")
