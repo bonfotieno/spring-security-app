@@ -15,6 +15,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 import java.util.concurrent.TimeUnit;
 
@@ -58,12 +59,22 @@ public class ApplicationSecurityConfig {
                 .authenticated() //any request must be authenticated i.e. client must specify the username and passwd
                 .and()
                 .formLogin() // and the mechanism that we want to reinforce the authenticity of the client is by using FormLogin
-                .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/courses", true)
+                    .loginPage("/login").permitAll()
+                    .defaultSuccessUrl("/courses", true)
                 .and()
-                .rememberMe()
+                .rememberMe()//defaults to 2 weeks
                     .tokenValiditySeconds((int)TimeUnit.DAYS.toSeconds(21))
-                    .key("somethingverysecured"); //defaults to 2 weeks
+                    .key("somethingverysecured")
+                .and()
+                .logout()
+                    .logoutUrl("/logout")
+                    .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET")) //to prevent CSRF if CSRF is disabled,
+                    //and it means that when ever a client goes to that method with /logout url then log out
+                    .clearAuthentication(true)
+                    .invalidateHttpSession(true)
+                    .deleteCookies("JSESSIONID", "remember-me")
+                    .logoutSuccessUrl("/login");
+
         return http.build();
     }
 
