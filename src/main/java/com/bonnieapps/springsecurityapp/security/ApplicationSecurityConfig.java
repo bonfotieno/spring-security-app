@@ -57,7 +57,9 @@ public class ApplicationSecurityConfig {
                 .and()
                 .formLogin() // and the mechanism that we want to reinforce the authenticity of the client is by using FormLogin
                 .loginPage("/login").permitAll()
-                .defaultSuccessUrl("/courses", true);
+                .defaultSuccessUrl("/courses", true)
+                .and()
+                .rememberMe(); //defaults to 2 weeks
         return http.build();
     }
 
